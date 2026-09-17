@@ -1,6 +1,7 @@
 import { auth } from '@/auth'
 import Image from 'next/image'
 import { redirect } from 'next/navigation'
+import { after } from 'next/server'
 import React, { ReactNode } from 'react'
 
 const Layout = async({ children }: { children: ReactNode }) => {
