@@ -77,7 +77,7 @@ const FileUpload = ({
     button:
       variant === "dark"
         ? "bg-dark-300"
-        : "bg-light-600 border-gray-100 border",
+        : "bg-white border-gray-100 border",
     placeholder:
       variant === "dark" ? "text-light-100" : "text-slate-500",
     text:
@@ -97,7 +97,7 @@ const FileUpload = ({
       return false;
     }
 
-    if (type === "video" && file.size > 50 * 1024 * 1024) {
+    else if (type === "video" && file.size > 50 * 1024 * 1024) {
       toast.add({
         title: "File size too large",
         description:
@@ -109,7 +109,7 @@ const FileUpload = ({
       return false;
     }
 
-    return true;
+    return  true;
   };
 
   const handleUpload = async (
@@ -147,6 +147,7 @@ const FileUpload = ({
       });
 
       setFile({ filePath: response.filePath ?? null });
+      console.log(response)
 
       if (response.filePath) {
         onFileChange(response.filePath);

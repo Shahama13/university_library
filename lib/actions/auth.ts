@@ -81,6 +81,7 @@ export const signUp = async (params: AuthCredentials) => {
                 email,
                 fullname
             },
+            retries: 1
         })
 
         return { success: true }

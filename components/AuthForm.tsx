@@ -16,7 +16,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FIELD_NAMES, FIELD_TYPES } from "@/constants";
 import { Input } from "./ui/input";
-import ImageUpload from "./ImageUpload";
+import FileUpload from "./FileUpload";
 import { toast } from "@/components/ui/toast"
 
 
@@ -98,7 +98,7 @@ const AuthForm = <T extends FieldValues>({
                       //   variant="dark"
                       //   onFileChange={field.onChange}
                       // />
-                      <ImageUpload
+                      <FileUpload
                         type="image"
                         folder="ids"
                         placeholder="Upload your ID"

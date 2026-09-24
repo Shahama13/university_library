@@ -17,24 +17,36 @@ const Header = ({ session }: { session: Session }) => {
 
             <ul className='flex flex-row items-center gap-8'>
                 <li>
-                    <Link href="/library" className={cn(
+                    <Link href="/" className={cn(
                         'text-base cursor-pointer capitalize',
-                        pathName === "/library" ? "text-light-200" : "text-light-100"
+                        pathName === "/" ? "text-amber-100" : "text-light-100"
                     )}
                     >
-                        Library
+                        Home
+                    </Link>
+                </li>
+                <li>
+                    <Link href="/search" className={cn(
+                        'text-base cursor-pointer capitalize',
+                        pathName === "/search" ? "text-amber-200" : "text-light-100"
+                    )}
+                    >
+                        Search
                     </Link>
                 </li>
 
                 <li>
-                    <Link href={"/my-profile"}>
+                    <Link href={"/my-profile"} className='flex gap-3 items-center'>
                         <Avatar className="bg-amber-100">
                             {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-                            <AvatarFallback className="text-gray-800">{getInitials(session?.user?.name || "User")}</AvatarFallback>
+                            <AvatarFallback className="text-gray-800">{getInitials(session?.user?.name || "User")} </AvatarFallback>
 
                         </Avatar>
+                            <p className='text-light-100'>{session?.user?.name}</p>
                     </Link>
                 </li>
+
+                
             </ul>
         </header >
     )
