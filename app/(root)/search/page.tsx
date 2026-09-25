@@ -3,6 +3,7 @@ import GenreFilter from "@/components/GenreFilter";
 import SearchPagination from "@/components/SearchPagination";
 import BookCard from "@/components/BookCard";
 import { getGenres, searchBooks } from "@/lib/actions/book";
+import NoResults from "@/components/NoResults";
 
 interface Props {
   searchParams: Promise<{ query?: string; genre?: string; page?: string }>;
@@ -44,9 +45,8 @@ const Page = async ({ searchParams }: Props) => {
             ))}
           </ul>
         ) : (
-          <p className="mt-10 text-center text-light-100">
-            No books matched your search.
-          </p>
+           <NoResults/>
+         
         )}
 
         <SearchPagination

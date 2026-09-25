@@ -84,7 +84,7 @@ export async function searchBooks({
 
   if (query) {
     conditions.push(
-      or(ilike(books.title, `%${query}%`), ilike(books.author, `%${query}%`)),
+      or(ilike(books.title, `%${query}%`), ilike(books.author, `%${query}%`), ilike(books.genre, `%${query}%`)),
     );
   }
 
