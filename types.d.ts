@@ -42,3 +42,5 @@ interface BorrowBookParams {
   bookId: string;
   userId: string;
 }
+
+type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";

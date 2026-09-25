@@ -5,11 +5,15 @@ import { cn } from "@/lib/utils"
 import Image from 'next/image'
 import { Button } from './ui/button'
 
-const BookCard = ({ id, title, genre, coverColor, coverUrl, isLoanedBook = false }: Book) => (
+interface Props extends Book {
+    variant: BookCoverVariant;
+}
+
+const BookCard = ({ id, title, genre, coverColor, coverUrl, isLoanedBook = false, variant }: Props) => (
 
     <li className={cn(isLoanedBook && "xs:w-52 w-full")}>
         <Link href={`/books/${id}`} className={cn(isLoanedBook && "xs:w-52 w-full")}>
-            <BookCover coverColor={coverColor} coverImage={coverUrl} variant='wide' />
+            <BookCover coverColor={coverColor} coverImage={coverUrl} variant={variant} />
 
 
             <div className={cn("mt-4", !isLoanedBook && "xs:max-w-40 max-w-28")}>

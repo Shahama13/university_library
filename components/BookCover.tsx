@@ -4,7 +4,6 @@ import BookCoverSvg from './BookCoverSvg';
 import { Image, ImageKitProvider } from "@imagekit/next";
 import config from '@/lib/config';
 
-type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
 
 const variantStyles: Record<BookCoverVariant, string> = {
     extraSmall: "book-cover_extra_small",

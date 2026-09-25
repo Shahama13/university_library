@@ -22,6 +22,7 @@ export default async function Home() {
         title="Latest Books"
         books={latestBooks.slice(1)}
         containerClassName="mt-28"
+        variant='wide'
       />
     </>
 

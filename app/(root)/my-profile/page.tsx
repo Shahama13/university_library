@@ -35,7 +35,7 @@ const Page = async () => {
                 <Button type="submit">Logout</Button>
             </form>
 
-            <BookList title="Borrowed Books" books={borrowedBooks.map(({ book }) => book)} containerClassName='flex-1' />
+            {/* <BookList title="Borrowed Books" books={borrowedBooks.map(({ book }) => book)} containerClassName='flex-1' /> */}
         </>
     )
 }

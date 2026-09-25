@@ -4,10 +4,11 @@ import BookCard from './BookCard';
 interface Props {
   title: string;
   books: Book[];
-  containerClassName?: string
+  containerClassName?: string;
+  variant: BookCoverVariant;
 }
 
-const BookList = ({ title, books, containerClassName }: Props) => {
+const BookList = ({ title, books, containerClassName, variant }: Props) => {
   if (books.length < 2) return;
 
   return (
@@ -16,7 +17,7 @@ const BookList = ({ title, books, containerClassName }: Props) => {
 
       <ul className="book-list">
         {books.map((book) => (
-          <BookCard key={book.title} {...book} />
+          <BookCard key={book.title} {...book} variant={variant} />
         ))}
       </ul>
     </section>
