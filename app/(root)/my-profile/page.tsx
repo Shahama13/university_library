@@ -1,11 +1,11 @@
 import { auth, signOut } from '@/auth'
-import BookList from '@/components/BookList'
+import ProfileCard from '@/components/ProfileCard'
+import BorrowedBookCard from '@/components/BorrowedBookCard'
 import { Button } from '@/components/ui/button'
 import { db } from '@/database/drizzle'
 import { books, borrowRecords, users } from '@/database/schema'
-import { eq } from 'drizzle-orm'
+import { desc, eq } from 'drizzle-orm'
 import { redirect } from 'next/navigation'
-import React from 'react'
 
 const Page = async () => {
     const session = await auth()
@@ -14,29 +14,69 @@ const Page = async () => {
         redirect('/sign-in')
     }
 
-    const currentUserDetails = await db.select().from(users).where(eq(users.id, session.user.id))
+    const [currentUser] = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, session.user.id))
+
+    if (!currentUser) redirect('/sign-in')
 
     const borrowedBooks = await db
-        .select({ book: books })
+        .select({
+            id: books.id,
+            title: books.title,
+            genre: books.genre,
+            coverColor: books.coverColor,
+            coverUrl: books.coverUrl,
+            borrowDate: borrowRecords.borrowDate,
+            dueDate: borrowRecords.dueDate,
+            returnDate: borrowRecords.returnDate,
+            status: borrowRecords.status,
+        })
         .from(borrowRecords)
         .innerJoin(books, eq(borrowRecords.bookId, books.id))
         .where(eq(borrowRecords.userId, session.user.id))
+        .orderBy(desc(borrowRecords.borrowDate))
 
     return (
-        <>
-            <form
-                action={async () => {
-                    "use server"
-                    await signOut()
-                    redirect("/sign-in")
-                }}
-                className="mb-10"
-            >
-                <Button type="submit">Logout</Button>
-            </form>
+        <div className="flex flex-col gap-10 xl:flex-row xl:items-start w-7xl max-w-8xl">
+            <ProfileCard
+                fullName={currentUser.fullname}
+                email={currentUser.email}
+                universityId={currentUser.universityId}
+                universityCard={currentUser.universityCard}
+            />
 
-            {/* <BookList title="Borrowed Books" books={borrowedBooks.map(({ book }) => book)} containerClassName='flex-1' /> */}
-        </>
+            <div className="flex flex-1 flex-col gap-5">
+                <div className="flex items-center justify-between">
+                    <h2 className="font-bebas-neue text-3xl text-light-100">
+                        Borrowed books
+                    </h2>
+
+                    <form
+                        action={async () => {
+                            "use server"
+                            await signOut()
+                            redirect("/sign-in")
+                        }}
+                    >
+                        <Button type="submit" variant="outline">Logout</Button>
+                    </form>
+                </div>
+
+                {borrowedBooks.length > 0 ? (
+                    <ul className="flex flex-row gap-5">
+                        {borrowedBooks.map((item) => (
+                            <BorrowedBookCard key={item.id} {...item} />
+                        ))}
+                    </ul>
+                ) : (
+                    <p className="text-light-100">
+                        You haven&apos;t borrowed any books yet.
+                    </p>
+                )}
+            </div>
+        </div>
     )
 }
 

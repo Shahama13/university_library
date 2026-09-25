@@ -147,7 +147,6 @@ const FileUpload = ({
       });
 
       setFile({ filePath: response.filePath ?? null });
-      console.log(response)
 
       if (response.filePath) {
         onFileChange(response.filePath);

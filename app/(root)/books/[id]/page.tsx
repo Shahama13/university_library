@@ -27,7 +27,6 @@ const Page = async ({ params }: { params: Promise<{ id: string }> }) => {
     .where(eq(books.genre, bookDetails.genre))
     .limit(6);
 
-  console.log(similarBooks, "similar books")
   return (
     <>
       {/*  */}

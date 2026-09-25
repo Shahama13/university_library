@@ -9,10 +9,6 @@ export const proxy = auth(async (req) => {
     const isLoggedIn = !!req.auth;
     const userId = req.auth?.user?.id;
 
-    console.log("PATH:", pathname);
-    console.log("LOGGED IN:", isLoggedIn);
-    console.log("USER ID:", userId);
-
     if (
         !isLoggedIn &&
         (pathname === "/" || pathname.startsWith("/my-profile"))
@@ -31,15 +27,10 @@ export const proxy = auth(async (req) => {
             .where(eq(users.id, userId))
             .limit(1);
 
-        console.log("DB RESULT:", result);
-
         isAdmin = result[0]?.role === "ADMIN";
-
-        console.log("IS ADMIN:", isAdmin);
     }
 
     if (pathname.startsWith("/admin") && !isAdmin) {
-        console.log("REDIRECTING NON-ADMIN");
         return NextResponse.redirect(
             new URL("/", req.url)
         );

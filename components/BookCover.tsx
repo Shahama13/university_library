@@ -27,7 +27,6 @@ const BookCover = ({
     coverColor = "#012B48",
     coverImage = "https://placehold.co/400x600.png",
 }: Props) => {
-    console.log(coverImage)
     return (
         <div
             className={cn(
