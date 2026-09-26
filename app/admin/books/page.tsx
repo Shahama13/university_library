@@ -1,24 +1,34 @@
-
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
-import React from 'react'
+import BooksTable from '@/components/admin/tables/BooksTable'
+import SortToggle from '@/components/admin/SortToggle'
+import { getAllBooks } from '@/lib/admin/actions/book'
 
-const Page = () => {
+interface Props {
+    searchParams: Promise<{ sort?: "title-asc" | "title-desc" }>
+}
+
+const Page = async ({ searchParams }: Props) => {
+    const { sort } = await searchParams
+    const books = await getAllBooks({ sort })
+
     return (
         <section className="w-full rounded-2xl bg-white p-7">
             <div className="flex flex-wrap items-center justify-between gap-2">
                 <h2 className="text-xl font-semibold">All Books</h2>
-                {/* Button will actually become a link */}
-                <Button className="bg-blue-900 text-white hover:text-black">
-                    <Link href={"/admin/books/new"}>
-                    ＋ Create a New Book
-                    </Link>
-                </Button>
+
+                <div className="flex items-center gap-3">
+                    <SortToggle type='title' />
+
+                    <Button className="bg-blue-900 text-white hover:text-black hover:bg-blue-100">
+                        <Link href={"/admin/books/new"}>
+                            ＋ Create a New Book
+                        </Link>
+                    </Button>
+                </div>
             </div>
 
-            <div className='mt-7 w-full overflow-hidden'>
-                <p>Table</p>
-            </div>
+            <BooksTable books={books} />
         </section>
     )
 }

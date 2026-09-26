@@ -13,7 +13,7 @@ interface Book {
   videoUrl: string;
   summary: string;
   createdAt: Date | null;
-  isLoanedBook?:Boolean
+  isLoanedBook?: Boolean
 }
 
 
@@ -38,6 +38,17 @@ interface BookParams {
   summary: string;
 }
 
+interface User {
+  id: string;
+  fullname: string;
+  email: string;
+  universityId: number;
+  universityCard: string;
+  status: "PENDING" | "APPROVED" | "REJECTED" | null;
+  role: "USER" | "ADMIN" | null;
+  createdAt: Date | string | null;
+  lastActivityDate: Date | string | null;
+}
 interface BorrowBookParams {
   bookId: string;
   userId: string;

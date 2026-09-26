@@ -10,7 +10,7 @@ import { Session } from 'next-auth';
 const Header = ({ session }: { session: Session }) => {
     const pathName = usePathname()
     return (
-        <header className='my-10 flex justify-between gap-5'>
+        <header className='my-10 flex justify-between gap-5 w-[90vw] '>
             <Link href="/">
                 <Image src="/icons/logo.svg" alt='logo' width={40} height={40} />
             </Link>

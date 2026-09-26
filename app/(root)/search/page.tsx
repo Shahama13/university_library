@@ -19,7 +19,7 @@ const Page = async ({ searchParams }: Props) => {
   ]);
 
   return (
-    <div className="w-7xl max-w-8xl">
+    <div className="max-w-8xl">
       <div className="library">
         <p className="library-subtitle">Discover your next great read:</p>
         <h1 className="library-title">

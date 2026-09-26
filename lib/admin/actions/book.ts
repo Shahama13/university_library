@@ -1,6 +1,6 @@
 "use server";
 
-import { books } from "@/database/schema";
+import { books, users } from "@/database/schema";
 import { db } from "@/database/drizzle";
 
 export const createBook = async (params: BookParams) => {
@@ -26,3 +26,33 @@ export const createBook = async (params: BookParams) => {
     };
   }
 };
+
+
+
+import { revalidatePath } from "next/cache";
+import { asc, desc, eq } from "drizzle-orm";
+
+interface GetAllBooksParams {
+  sort?: "title-asc" | "title-desc";
+}
+
+export async function getAllBooks({ sort = "title-asc" }: GetAllBooksParams = {}) {
+  const orderBy = sort === "title-desc" ? desc(books.title) : asc(books.title);
+
+  return db.select().from(books).orderBy(orderBy);
+}
+
+export async function deleteBook(id: string) {
+  await db.delete(books).where(eq(books.id, id));
+  revalidatePath("/admin/books");
+}
+
+interface GetAllUsersParams {
+  sort?: "user-asc" | "user-desc";
+}
+
+export async function getAllUsers({ sort = "user-asc" }: GetAllUsersParams = {}) {
+  const orderBy = sort === "user-desc" ? desc(users.fullname) : asc(users.fullname);
+
+  return db.select().from(users).orderBy(orderBy)
+}

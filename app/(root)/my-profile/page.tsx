@@ -39,7 +39,7 @@ const Page = async () => {
         .orderBy(desc(borrowRecords.borrowDate))
 
     return (
-        <div className="flex flex-col gap-10 xl:flex-row xl:items-start w-7xl max-w-8xl">
+        <div className="flex flex-col gap-10 xl:flex-row xl:items-start max-w-8xl">
             <ProfileCard
                 fullName={currentUser.fullname}
                 email={currentUser.email}
