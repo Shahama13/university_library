@@ -1,6 +1,6 @@
 import SortToggle from '@/components/admin/SortToggle'
 import UsersTable from '@/components/admin/tables/UsersTable'
-import { getAllUsers } from '@/lib/admin/actions/book'
+import { getAllUsers } from '@/lib/admin/actions/user'
 import React from 'react'
 
 interface Props{

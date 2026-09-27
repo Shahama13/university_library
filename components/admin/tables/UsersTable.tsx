@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { SquarePen } from "lucide-react";
+import { SquareArrowOutUpRight, SquarePen } from "lucide-react";
 import {
     Table,
     TableBody,
@@ -10,9 +10,15 @@ import {
 } from "@/components/ui/table";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn, getInitials } from "@/lib/utils";
+import DeleteButton from "../DeleteButton";
+import { getImageKitUrl } from "@/lib/imagekitUrl";
+
+interface UserData extends User {
+    borrowedBooks: number
+}
 
 interface Props {
-    users: User[];
+    users: UserData[];
 }
 
 const formatDate = (date: Date | string | null) => {
@@ -29,12 +35,13 @@ const UsersTable = ({ users }: Props) => {
 
     return (
         <div className="mt-7 w-full overflow-x-auto">
-            <Table className="min-w-[720px]">
+            <Table className="min-w-180">
                 <TableHeader className="bg-gray-50">
                     <TableRow>
                         <TableHead>Name</TableHead>
                         <TableHead>Date Joined</TableHead>
                         <TableHead>Role</TableHead>
+                        <TableHead>Books Borrowed</TableHead>
                         <TableHead>University Id No</TableHead>
                         <TableHead>University Id Card</TableHead>
                         <TableHead>Action</TableHead>
@@ -46,7 +53,6 @@ const UsersTable = ({ users }: Props) => {
                             <TableCell>
                                 <div className="flex items-center gap-3">
                                     <Avatar className="bg-blue-100">
-                                        {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
                                         <AvatarFallback className="text-gray-800">{getInitials(user?.fullname)} </AvatarFallback>
                                     </Avatar>
 
@@ -59,16 +65,34 @@ const UsersTable = ({ users }: Props) => {
                             </TableCell>
                             <TableCell className="text-gray-800 font-bold">{formatDate(user.createdAt)}</TableCell>
                             <TableCell className="text-gray-800">
-                                <div className={cn(user.role==="USER"?"bg-pink-100":"bg-green-100", "p-1 rounded-2xl text-center")}>
-                                   <p className={cn(user.role==="USER"?"text-pink-600":"text-green-800", "capitalize")}>{user.role?.toLowerCase()}</p> 
+                                <div className={cn(user.role === "USER" ? "bg-pink-100" : "bg-green-100", "p-1 rounded-2xl text-center w-16")}>
+                                    <p className={cn(user.role === "USER" ? "text-pink-600" : "text-green-800", "capitalize font-semibold")}>{user.role?.toLowerCase()}</p>
                                 </div>
                             </TableCell>
-                            <TableCell className="text-gray-800">{user.universityId}</TableCell>
+                            <TableCell className="text-gray-800 font-semibold">{user.borrowedBooks}</TableCell>
+                            <TableCell className="text-gray-800 font-semibold">{user.universityId}</TableCell>
                             <TableCell>
-                                <div className="flex items-center gap-3">
 
-                                    {/* <DeleteuserButton id={user.id} title={user.title} /> */}
-                                </div>
+                                <TableCell>
+                                    <a
+                                        href={getImageKitUrl(user.universityCard)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="flex w-fit items-center gap-2 text-blue-500 font-semibold"
+                                    >
+                                        View ID Card
+                                        <SquareArrowOutUpRight size={16} />
+                                    </a>
+                                </TableCell>
+
+                            </TableCell>
+                            <TableCell>
+                                <DeleteButton
+                                    id={user.id}
+                                    title={user.fullname}
+                                    type={"user"}
+                                    dialogDescription={"Are you sure you want to delete this user?. This can&apos;t be undone."}
+                                />
                             </TableCell>
                         </TableRow>
                     ))}

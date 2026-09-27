@@ -9,7 +9,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import BookCoverThumbnail from "@/components/admin/BookCoverThumbnail";
-import DeleteBookButton from "@/components/admin/DeleteBookButton";
+import DeleteButton from "@/components/admin/DeleteButton";
 import BookCover from "../../BookCover";
 
 interface Book {
@@ -76,7 +76,12 @@ const BooksTable = ({ books }: Props) => {
                                     >
                                         <SquarePen className="size-4" />
                                     </Link>
-                                    <DeleteBookButton id={book.id} title={book.title} />
+                                    <DeleteButton
+                                        id={book.id}
+                                        title={book.title}
+                                        type={"book"}
+                                        dialogDescription={"This removes the book and its borrow history. This can&apos;t be undone."}
+                                    />
                                 </div>
                             </TableCell>
                         </TableRow>

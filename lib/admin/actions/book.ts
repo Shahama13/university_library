@@ -46,13 +46,3 @@ export async function deleteBook(id: string) {
   await db.delete(books).where(eq(books.id, id));
   revalidatePath("/admin/books");
 }
-
-interface GetAllUsersParams {
-  sort?: "user-asc" | "user-desc";
-}
-
-export async function getAllUsers({ sort = "user-asc" }: GetAllUsersParams = {}) {
-  const orderBy = sort === "user-desc" ? desc(users.fullname) : asc(users.fullname);
-
-  return db.select().from(users).orderBy(orderBy)
-}
