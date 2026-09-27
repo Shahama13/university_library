@@ -70,7 +70,8 @@ export const signUp = async (params: AuthCredentials) => {
             email,
             universityCard,
             universityId,
-            password: hashedpassword
+            password: hashedpassword,
+            role:"USER"
         })
 
         await signInWithCredentials({ email, password })

@@ -12,6 +12,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { cn, getInitials } from "@/lib/utils";
 import DeleteButton from "../DeleteButton";
 import { getImageKitUrl } from "@/lib/imagekitUrl";
+import { RoleDropdown } from "../RoleDropdown";
 
 interface UserData extends User {
     borrowedBooks: number
@@ -65,9 +66,7 @@ const UsersTable = ({ users }: Props) => {
                             </TableCell>
                             <TableCell className="text-gray-800 font-bold">{formatDate(user.createdAt)}</TableCell>
                             <TableCell className="text-gray-800">
-                                <div className={cn(user.role === "USER" ? "bg-pink-100" : "bg-green-100", "p-1 rounded-2xl text-center w-16")}>
-                                    <p className={cn(user.role === "USER" ? "text-pink-600" : "text-green-800", "capitalize font-semibold")}>{user.role?.toLowerCase()}</p>
-                                </div>
+                                <RoleDropdown role={user.role || "USER"} id={user.id} />
                             </TableCell>
                             <TableCell className="text-gray-800 font-semibold">{user.borrowedBooks}</TableCell>
                             <TableCell className="text-gray-800 font-semibold">{user.universityId}</TableCell>
@@ -87,7 +86,7 @@ const UsersTable = ({ users }: Props) => {
                                     id={user.id}
                                     title={user.fullname}
                                     type={"user"}
-                                    dialogDescription={"Are you sure you want to delete this user?. This can&apos;t be undone."}
+                                    dialogDescription={"Are you sure you want to delete this user?. This can't be undone."}
                                 />
                             </TableCell>
                         </TableRow>

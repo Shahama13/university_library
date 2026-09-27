@@ -45,7 +45,7 @@ interface User {
   universityId: number;
   universityCard: string;
   status: statusType;
-  role: "USER" | "ADMIN" | null;
+  role: userRole;
   createdAt: Date | string | null;
   lastActivityDate: Date | string | null;
 }
@@ -56,3 +56,4 @@ interface BorrowBookParams {
 
 type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
 type statusType = "PENDING" | "APPROVED" | "REJECTED" | null;
+type userRole = "USER" | "ADMIN" | null;

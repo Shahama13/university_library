@@ -80,7 +80,7 @@ const BooksTable = ({ books }: Props) => {
                                         id={book.id}
                                         title={book.title}
                                         type={"book"}
-                                        dialogDescription={"This removes the book and its borrow history. This can&apos;t be undone."}
+                                        dialogDescription={"This removes the book and its borrow history. This can't be undone."}
                                     />
                                 </div>
                             </TableCell>

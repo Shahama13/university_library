@@ -53,3 +53,8 @@ export async function updateUserStatus(status: statusType, id: string) {
     await db.update(users).set({ status }).where(eq(users.id, id));
     revalidatePath("/admin/account-requests")
 }
+
+export async function updateUserRole(role: userRole, id: string) {
+    await db.update(users).set({ role }).where(eq(users.id, id));
+    revalidatePath("/admin/users")
+}
