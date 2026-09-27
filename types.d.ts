@@ -44,7 +44,7 @@ interface User {
   email: string;
   universityId: number;
   universityCard: string;
-  status: "PENDING" | "APPROVED" | "REJECTED" | null;
+  status: statusType;
   role: "USER" | "ADMIN" | null;
   createdAt: Date | string | null;
   lastActivityDate: Date | string | null;
@@ -55,3 +55,4 @@ interface BorrowBookParams {
 }
 
 type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
+type statusType = "PENDING" | "APPROVED" | "REJECTED" | null;

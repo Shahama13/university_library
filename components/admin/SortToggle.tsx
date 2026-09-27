@@ -5,7 +5,7 @@ import { ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 
-const SortToggle = ({ type }: { type: string }) => {
+const SortToggle = ({ type , displayText}: { type: string, displayText?: string }) => {
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -24,7 +24,8 @@ const SortToggle = ({ type }: { type: string }) => {
             className="gap-1.5 rounded-md bg-gray-50 text-gray-700 hover:bg-gray-100!"
         >
             <ArrowUpDown className="size-3.5" />
-            {isDesc ? "Z-A" : "A-Z"}
+            {displayText? displayText: isDesc ? "Z-A" : "A-Z"}
+          
         </Button>
     );
 };
