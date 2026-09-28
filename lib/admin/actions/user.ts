@@ -49,7 +49,7 @@ export async function deleteUser(id: string) {
     revalidatePath("/admin/user")
 }
 
-export async function updateUserStatus(status: statusType, id: string) {
+export async function updateUserStatus(status: userStatusType, id: string) {
     await db.update(users).set({ status }).where(eq(users.id, id));
     revalidatePath("/admin/account-requests")
 }

@@ -11,27 +11,10 @@ import {
 import BookCoverThumbnail from "@/components/admin/BookCoverThumbnail";
 import DeleteButton from "@/components/admin/DeleteButton";
 import BookCover from "../../BookCover";
-
-interface Book {
-    id: string;
-    title: string;
-    author: string;
-    genre: string;
-    coverUrl: string;
-    coverColor: string;
-    createdAt: Date | string | null;
-}
-
+import { formatDate } from "@/lib/formatDate";
 interface Props {
     books: Book[];
 }
-
-const formatDate = (date: Date | string | null) => {
-    if (!date) return "—";
-    const d = new Date(date);
-    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(d);
-    return `${month} ${d.getDate()} ${d.getFullYear()}`;
-};
 
 const BooksTable = ({ books }: Props) => {
     if (books.length === 0) {

@@ -16,6 +16,16 @@ interface Book {
   isLoanedBook?: Boolean
 }
 
+interface BorrowRecord {
+  id: string;
+  userId: string;
+  bookId: string;
+  borrowDate: Date;
+  dueDate: string;
+  returnDate: string | null;
+  status: borrowStatus;
+  createdAt: Date | null;
+}
 
 interface AuthCredentials {
   fullname: string;
@@ -44,7 +54,7 @@ interface User {
   email: string;
   universityId: number;
   universityCard: string;
-  status: statusType;
+  status: userStatusType;
   role: userRole;
   createdAt: Date | string | null;
   lastActivityDate: Date | string | null;
@@ -55,5 +65,6 @@ interface BorrowBookParams {
 }
 
 type BookCoverVariant = "extraSmall" | "small" | "medium" | "regular" | "wide";
-type statusType = "PENDING" | "APPROVED" | "REJECTED" | null;
+type userStatusType = "PENDING" | "APPROVED" | "REJECTED" | null;
 type userRole = "USER" | "ADMIN" | null;
+type borrowStatus = "BORROWED" | "RETURNED" | "LATE_RETURNED"

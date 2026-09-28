@@ -13,6 +13,7 @@ import { cn, getInitials } from "@/lib/utils";
 import DeleteButton from "../DeleteButton";
 import { getImageKitUrl } from "@/lib/imagekitUrl";
 import { RoleDropdown } from "../RoleDropdown";
+import { formatDate } from "@/lib/formatDate";
 
 interface UserData extends User {
     borrowedBooks: number
@@ -21,13 +22,6 @@ interface UserData extends User {
 interface Props {
     users: UserData[];
 }
-
-const formatDate = (date: Date | string | null) => {
-    if (!date) return "—";
-    const d = new Date(date);
-    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(d);
-    return `${month} ${d.getDate()} ${d.getFullYear()}`;
-};
 
 const UsersTable = ({ users }: Props) => {
     if (users.length === 0) {

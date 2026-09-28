@@ -19,8 +19,6 @@ import { Input } from "./ui/input";
 import FileUpload from "./FileUpload";
 import { toast } from "@/components/ui/toast"
 
-
-
 interface Props<T extends FieldValues> {
   schema: ZodType<T, FieldValues>;
   defaultValues: T;

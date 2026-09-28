@@ -11,10 +11,45 @@ import { updateUserRole } from "@/lib/admin/actions/user"
 import { cn } from "cn"
 import { useRouter } from "next/navigation"
 
-export function RoleDropdown({ role, id }: { role: string, id: string }) {
+type Role = "USER" | "ADMIN"
+
+const roleStyles = {
+    USER: {
+        bg: "bg-pink-100",
+        text: "text-pink-600",
+    },
+    ADMIN: {
+        bg: "bg-green-100",
+        text: "text-green-800",
+    },
+}
+
+function RoleBadge({ role }: { role: Role }) {
+    const styles = roleStyles[role]
+
+    return (
+        <div
+            className={cn(
+                "w-16 rounded-2xl p-1 text-center",
+                styles.bg
+            )}
+        >
+            <p
+                className={cn(
+                    "font-semibold capitalize",
+                    styles.text
+                )}
+            >
+                {role.toLowerCase()}
+            </p>
+        </div>
+    )
+}
+
+export function RoleDropdown({ role, id }: { role: Role; id: string }) {
     const router = useRouter()
 
-    const handleRoleChange = async (newRole: "USER" | "ADMIN") => {
+    const handleRoleChange = async (newRole: Role) => {
         await updateUserRole(newRole, id)
         router.refresh()
     }
@@ -23,23 +58,8 @@ export function RoleDropdown({ role, id }: { role: string, id: string }) {
         <DropdownMenu>
             <DropdownMenuTrigger
                 render={
-                    <button
-                        type="button"
-                        className={cn(
-                            role === "USER" ? "bg-pink-100" : "bg-green-100",
-                            "p-1 rounded-2xl text-center w-16"
-                        )}
-                    >
-                        <p
-                            className={cn(
-                                role === "USER"
-                                    ? "text-pink-600"
-                                    : "text-green-800",
-                                "capitalize font-semibold"
-                            )}
-                        >
-                            {role?.toLowerCase()}
-                        </p>
+                    <button type="button">
+                        <RoleBadge role={role} />
                     </button>
                 }
             />
@@ -50,22 +70,14 @@ export function RoleDropdown({ role, id }: { role: string, id: string }) {
                         checked={role === "USER"}
                         onClick={() => handleRoleChange("USER")}
                     >
-                        <div className="w-16 rounded-2xl bg-pink-100 p-1 text-center">
-                            <p className="font-semibold capitalize text-pink-600">
-                                user
-                            </p>
-                        </div>
+                        <RoleBadge role="USER" />
                     </DropdownMenuCheckboxItem>
 
                     <DropdownMenuCheckboxItem
                         checked={role === "ADMIN"}
                         onClick={() => handleRoleChange("ADMIN")}
                     >
-                        <div className="w-16 rounded-2xl bg-green-100 p-1 text-center">
-                            <p className="font-semibold capitalize text-green-800">
-                                admin
-                            </p>
-                        </div>
+                        <RoleBadge role="ADMIN" />
                     </DropdownMenuCheckboxItem>
                 </DropdownMenuGroup>
             </DropdownMenuContent>

@@ -4,6 +4,7 @@ import { BookOpen, CalendarDays, CircleAlert, CircleCheck, Receipt } from "lucid
 import config from "@/lib/config";
 import BookCover from "./BookCover";
 import { getCoverGradient } from "@/lib/coverGradient";
+import { formatDate } from "@/lib/formatDate";
 
 interface Props {
     id: string;
@@ -16,11 +17,6 @@ interface Props {
     returnDate: string | null;
     status: "BORROWED" | "RETURNED";
 }
-
-const formatDate = (date: Date | string) =>
-    new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric" }).format(
-        new Date(date),
-    );
 
 const BorrowedBookCard = ({
     id,

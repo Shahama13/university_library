@@ -13,18 +13,12 @@ import { cn, getInitials } from "@/lib/utils";
 import DeleteButton from "../DeleteButton";
 import { getImageKitUrl } from "@/lib/imagekitUrl";
 import ApproveRejectUser from "../ApproveRejectUser";
+import { formatDate } from "@/lib/formatDate";
 
 
 interface Props {
     users: User[];
 }
-
-const formatDate = (date: Date | string | null) => {
-    if (!date) return "—";
-    const d = new Date(date);
-    const month = new Intl.DateTimeFormat("en-US", { month: "short" }).format(d);
-    return `${month} ${d.getDate()} ${d.getFullYear()}`;
-};
 
 const AccountRequestsTable = ({ users }: Props) => {
     if (users.length === 0) {

@@ -66,7 +66,6 @@ export const borrowBook = async (params: BorrowBookParams) => {
   }
 };
 
-
 const PAGE_SIZE = 12;
 
 interface SearchBooksParams {

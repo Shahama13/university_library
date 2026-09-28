@@ -16,7 +16,7 @@ const page = async ({ searchParams }: Props) => {
                 <h2 className="text-xl font-semibold">Account Registration Requests</h2>
 
                 <div className="flex items-center gap-3">
-                    <SortToggle type='user' displayText={"Oldest to Recent"}/>
+                    <SortToggle type='user' displayText={true}/>
 
                 </div>
             </div>
