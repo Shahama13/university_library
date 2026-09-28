@@ -20,14 +20,11 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import FileUpload from "@/components/FileUpload";
 import ColorPicker from "../ColorPicker";
-import { createBook } from "@/lib/admin/actions/book";
+import { createBook, updateBook } from "@/lib/admin/actions/book";
 import { toast } from "@/components/ui/toast";
-
-
 
 interface Props extends Partial<Book> {
   type?: "create" | "update"
-
 }
 
 const BookForm = ({
@@ -44,36 +41,40 @@ const BookForm = ({
   >({
     resolver: zodResolver(bookSchema),
     defaultValues: {
-      title: '',
-      description: '',
-      author: '',
-      genre: '',
-      rating: 1,
-      totalCopies: 1,
-      coverUrl: '',
-      coverColor: '',
-      videoUrl: '',
-      summary: '',
+      title: book.title ?? '',
+      description: book.description ?? '',
+      author: book.author ?? '',
+      genre: book.genre ?? '',
+      rating: book.rating ?? 1,
+      totalCopies: book.totalCopies ?? 1,
+      coverUrl: book.coverUrl ?? '',
+      coverColor: book.coverColor ?? '',
+      videoUrl: book.videoUrl ?? '',
+      summary: book.summary ?? '',
     },
   })
 
-  const onSubmit = async (values: z.infer<typeof bookSchema>) => { 
-   const result = await createBook(values);
+  const onSubmit = async (values: z.infer<typeof bookSchema>) => {
+    const isUpdate = type === "update" && book.id
+
+    const result = isUpdate
+      ? await updateBook(book.id!, values)
+      : await createBook(values)
 
     if (result.success) {
       toast.add({
         title: "Success",
-        description: "Book created successfully",
-        type:"success"
-      });
+        description: isUpdate ? "Book updated successfully" : "Book created successfully",
+        type: "success",
+      })
 
-      router.push(`/admin/books/${result.data.id}`);
+      router.push(`/admin/books/${result.data.id}`)
     } else {
       toast.add({
         title: "Error",
         description: result.message,
         type: "error",
-      });
+      })
     }
   }
 
@@ -205,7 +206,7 @@ const BookForm = ({
             </FormItem>
           )}
         />
-       
+
         <FormField
           control={form.control}
           name={"coverUrl"}
@@ -320,7 +321,7 @@ const BookForm = ({
 
 
         <Button type="submit" className="book-form_btn">
-          Add Book To Library
+          {type === "update" ? "Update Book" : "Add Book To Library"}
         </Button>
       </form>
     </Form>

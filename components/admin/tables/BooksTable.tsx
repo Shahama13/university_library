@@ -54,15 +54,20 @@ const BooksTable = ({ books }: Props) => {
                     {books.map((book) => (
                         <TableRow key={book.id}>
                             <TableCell>
-                                <div className="flex items-center gap-3">
-                                    {/* <BookCoverThumbnail
-                    coverUrl={book.coverUrl}
-                    coverColor={book.coverColor}
-                    title={book.title}
-                  /> */}
-                                    <BookCover coverImage={book.coverUrl} coverColor={book.coverColor} variant="extraSmall" key={book.title} />
-                                    <span className="font-semibold text-gray-900">{book.title}</span>
-                                </div>
+                                <Link
+                                    href={`/admin/books/${book.id}`}
+                                    className="flex items-center gap-3"
+                                >
+                                    <BookCover
+                                        coverImage={book.coverUrl}
+                                        coverColor={book.coverColor}
+                                        variant="extraSmall"
+                                        key={book.title}
+                                    />
+                                    <span className="font-semibold text-gray-900 hover:underline">
+                                        {book.title}
+                                    </span>
+                                </Link>
                             </TableCell>
                             <TableCell className="text-gray-600">{book.author}</TableCell>
                             <TableCell className="text-gray-600">{book.genre}</TableCell>
@@ -70,7 +75,7 @@ const BooksTable = ({ books }: Props) => {
                             <TableCell>
                                 <div className="flex items-center gap-3">
                                     <Link
-                                        href={`/admin/books/${book.id}`}
+                                        href={`/admin/books/${book.id}/edit`}
                                         className="text-blue-600 hover:text-blue-800"
                                         aria-label={`Edit ${book.title}`}
                                     >
@@ -88,7 +93,7 @@ const BooksTable = ({ books }: Props) => {
                     ))}
                 </TableBody>
             </Table>
-        </div>
+        </div >
     );
 };
 
