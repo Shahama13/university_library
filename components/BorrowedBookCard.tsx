@@ -15,7 +15,7 @@ interface Props {
     borrowDate: Date | string;
     dueDate: string;
     returnDate: string | null;
-    status: "BORROWED" | "RETURNED";
+    status: borrowStatus;
 }
 
 const BorrowedBookCard = ({

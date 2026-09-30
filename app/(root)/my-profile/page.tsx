@@ -1,7 +1,6 @@
 import { auth, signOut } from '@/auth'
 import ProfileCard from '@/components/ProfileCard'
 import BorrowedBookCard from '@/components/BorrowedBookCard'
-import { Button } from '@/components/ui/button'
 import { db } from '@/database/drizzle'
 import { books, borrowRecords, users } from '@/database/schema'
 import { desc, eq } from 'drizzle-orm'
@@ -52,16 +51,6 @@ const Page = async () => {
                     <h2 className="font-bebas-neue text-3xl text-light-100">
                         Borrowed books
                     </h2>
-
-                    <form
-                        action={async () => {
-                            "use server"
-                            await signOut()
-                            redirect("/sign-in")
-                        }}
-                    >
-                        <Button type="submit" variant="outline">Logout</Button>
-                    </form>
                 </div>
 
                 {borrowedBooks.length > 0 ? (

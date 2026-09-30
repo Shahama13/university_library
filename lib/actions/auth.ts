@@ -93,3 +93,10 @@ export const signUp = async (params: AuthCredentials) => {
     }
 
 }
+
+import { signOut } from "@/auth"
+
+export const logout = async () => {
+    await signOut()
+    redirect("/sign-in")
+}

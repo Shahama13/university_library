@@ -1,11 +1,11 @@
 "use client";
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import React from 'react'
+import {  usePathname } from 'next/navigation'
 import { cn, getInitials } from "@/lib/utils"
 import Image from "next/image"
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { Session } from 'next-auth';
+import LogoutBtn from './LogoutBtn';
 
 const Header = ({ session }: { session: Session }) => {
     const pathName = usePathname()
@@ -42,11 +42,13 @@ const Header = ({ session }: { session: Session }) => {
                             <AvatarFallback className="text-gray-800">{getInitials(session?.user?.name || "User")} </AvatarFallback>
 
                         </Avatar>
-                            <p className='text-light-100'>{session?.user?.name}</p>
+                        <p className='text-light-100'>{session?.user?.name}</p>
                     </Link>
                 </li>
 
-                
+
+                <LogoutBtn />
+
             </ul>
         </header >
     )
