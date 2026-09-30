@@ -54,7 +54,7 @@ const Page = async () => {
                 </div>
 
                 {borrowedBooks.length > 0 ? (
-                    <ul className="flex flex-row gap-5">
+                    <ul className="flex flex-row gap-5 flex-wrap">
                         {borrowedBooks.map((item) => (
                             <BorrowedBookCard key={item.id} {...item} />
                         ))}

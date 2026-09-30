@@ -1,9 +1,9 @@
-
 import { db } from "@/database/drizzle";
 import { users } from "@/database/schema";
 import { serve } from "@upstash/workflow/nextjs"
 import { eq } from "drizzle-orm";
 import { sendEmail } from "@/lib/workflow"
+import { welcomeEmail, inactivityReminderEmail, checkInReminderEmail } from "@/lib/workflow/email-templates"
 
 type InitialData = {
   email: string;
@@ -14,6 +14,8 @@ type UserState = "active" | "non-active";
 const ONE_DAY_IN_MS = 24 * 60 * 60 * 1000;
 const THREE_DAYS_IN_MS = 3 * ONE_DAY_IN_MS;
 const THIRTY_DAYS_IN_MS = 30 * ONE_DAY_IN_MS
+
+const SITE_URL = process.env.NEXT_PUBLIC_PROD_API_ENDPOINT ?? "https://bookwise.app"
 
 const getUserState = async (email: string): Promise<UserState> => {
   const user = await db
@@ -33,7 +35,6 @@ const getUserState = async (email: string): Promise<UserState> => {
   }
 
   return "active"
-
 }
 
 export const { POST } = serve<InitialData>(async (context) => {
@@ -44,8 +45,8 @@ export const { POST } = serve<InitialData>(async (context) => {
   await context.run("new-signup", async () => {
     await sendEmail({
       email,
-      subject: 'Welcome to the platform',
-      message: `Welcome ${fullname}`
+      subject: "Welcome to BookWise, Your Reading Companion!",
+      message: welcomeEmail({ fullname, loginUrl: `${SITE_URL}/sign-in` }),
     })
   })
 
@@ -60,16 +61,16 @@ export const { POST } = serve<InitialData>(async (context) => {
       await context.run("send-email-non-active", async () => {
         await sendEmail({
           email,
-          subject: 'Are you still there?',
-          message: `Hey ${fullname}, we miss you!`
+          subject: "We Miss You at BookWise!",
+          message: inactivityReminderEmail({ fullname, browseUrl: `${SITE_URL}/library` }),
         })
       })
     } else if (state === "active") {
       await context.run("send-email-active", async () => {
         await sendEmail({
           email,
-          subject: 'Welcome back!',
-          message: `Welcome back ${fullname}!`
+          subject: "Don't Forget to Check In at BookWise",
+          message: checkInReminderEmail({ fullname, loginUrl: `${SITE_URL}/sign-in` }),
         })
       })
     }
@@ -77,4 +78,3 @@ export const { POST } = serve<InitialData>(async (context) => {
     await context.sleep("wait-for-1-month", 60 * 60 * 24 * 30)
   }
 })
-

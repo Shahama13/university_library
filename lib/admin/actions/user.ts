@@ -3,7 +3,10 @@ import { db } from "@/database/drizzle";
 import { borrowRecords, users } from "@/database/schema";
 import { asc, count, desc, eq, isNull, or } from "drizzle-orm";
 import { revalidatePath } from "next/cache";
+import { sendEmail } from "@/lib/workflow";
+import { accountApprovedEmail } from "@/lib/workflow/email-templates";
 
+const SITE_URL = process.env.NEXT_PUBLIC_PROD_API_ENDPOINT ?? "https://bookwise.app";
 
 interface GetAllUsersParams {
     sort?: "user-asc" | "user-desc";
@@ -52,6 +55,29 @@ export async function deleteUser(id: string) {
 export async function updateUserStatus(status: userStatusType, id: string) {
     await db.update(users).set({ status }).where(eq(users.id, id));
     revalidatePath("/admin/account-requests")
+
+    if (status === "APPROVED") {
+        try {
+            const [user] = await db
+                .select({ email: users.email, fullname: users.fullname })
+                .from(users)
+                .where(eq(users.id, id))
+                .limit(1);
+
+            if (user) {
+                await sendEmail({
+                    email: user.email,
+                    subject: "Your BookWise Account Has Been Approved!",
+                    message: accountApprovedEmail({
+                        fullname: user.fullname,
+                        loginUrl: `${SITE_URL}/sign-in`,
+                    }),
+                });
+            }
+        } catch (emailError) {
+            console.log("Failed to send account-approved email:", emailError);
+        }
+    }
 }
 
 export async function updateUserRole(role: userRole, id: string) {

@@ -1,16 +1,20 @@
 "use server";
 
 import { db } from "@/database/drizzle";
-import { books, borrowRecords } from "@/database/schema";
-import { and, eq, ilike, or , count } from "drizzle-orm";
+import { books, borrowRecords, users } from "@/database/schema";
+import { and, eq, ilike, or, count } from "drizzle-orm";
 import dayjs from "dayjs";
+import { sendEmail } from "@/lib/workflow";
+import { bookBorrowedEmail, bookReceiptEmail } from "@/lib/workflow/email-templates";
+
+const SITE_URL = process.env.NEXT_PUBLIC_PROD_API_ENDPOINT ?? "https://bookwise.app";
 
 export const borrowBook = async (params: BorrowBookParams) => {
   const { userId, bookId } = params;
 
   try {
     const book = await db
-      .select({ availableCopies: books.availableCopies })
+      .select({ availableCopies: books.availableCopies, title: books.title })
       .from(books)
       .where(eq(books.id, bookId))
       .limit(1);
@@ -38,6 +42,8 @@ export const borrowBook = async (params: BorrowBookParams) => {
         error: "You have already borrowed this book and cannot borrow it again.",
       };
     }
+
+    const borrowDate = dayjs().toDate().toDateString();
     const dueDate = dayjs().add(7, "day").toDate().toDateString();
 
     const record = await db.insert(borrowRecords).values({
@@ -51,6 +57,43 @@ export const borrowBook = async (params: BorrowBookParams) => {
       .update(books)
       .set({ availableCopies: book[0].availableCopies - 1 })
       .where(eq(books.id, bookId));
+
+    // fire-and-forget: a failed email shouldn't undo a successful borrow
+    try {
+      const [user] = await db
+        .select({ email: users.email, fullname: users.fullname })
+        .from(users)
+        .where(eq(users.id, userId))
+        .limit(1);
+
+      if (user) {
+        await sendEmail({
+          email: user.email,
+          subject: "You've Borrowed a Book!",
+          message: bookBorrowedEmail({
+            fullname: user.fullname,
+            bookTitle: book[0].title,
+            borrowDate,
+            dueDate,
+            borrowedBooksUrl: `${SITE_URL}/my-profile`,
+          }),
+        });
+
+        await sendEmail({
+          email: user.email,
+          subject: `Your Receipt for ${book[0].title} is Ready!`,
+          message: bookReceiptEmail({
+            fullname: user.fullname,
+            bookTitle: book[0].title,
+            borrowDate,
+            dueDate,
+            receiptUrl: `${SITE_URL}/my-profile`,
+          }),
+        });
+      }
+    } catch (emailError) {
+      console.log("Failed to send borrow emails:", emailError);
+    }
 
     return {
       success: true,
